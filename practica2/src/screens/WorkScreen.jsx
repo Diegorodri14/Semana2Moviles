@@ -1,43 +1,41 @@
 import React from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
- 
+
 import CustomButton from "../components/Button";
 import WorkCard from "../components/WorkCard";
- 
-import useWorkData from "../hooks/useWork.js";
-const workScreen = () => {
-  const { workData, loading, loadMoreWork } = usePokemonData();
- 
+import useWorkData from "../hooks/useWork";
+
+const WorkScreen = () => {
+  const { workData, loading, loadMoreWork } = useWorkData();
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Pokemon</Text>
+      <Text style={styles.title}>Trabajadores</Text>
       <Text style={styles.text}>
-        En esta pantalla cargaremos información de los trabajadores, esta información
-        se obtendrá de la API de trabajos, la cual nos permitirá obtener datos
-        como el nombre, tipo, habilidades y estadísticas de cada Pokémon.
-        Inicialmente se mostrarán solamente 25 pokemon, pero se implementará un
-        botón para cargar más trabajos a medida que el usuario lo desee.
+        En esta pantalla se muestra información de trabajadores obtenida desde
+        la API de trabajos. Se cargan 5 inicialmente y puedes agregar más con el botón.
       </Text>
+
       {loading ? (
-        <Text style={styles.loadingText}>Cargando Trabajo...</Text>
+        <Text style={styles.loadingText}>Cargando trabajos...</Text>
       ) : (
         <ScrollView contentContainerStyle={styles.scrollContainer}>
-          {workData.map((work, index) => (
-            <PokemonCard key={index} pokemon={work} />
+          {workData.map((work) => (
+            <WorkCard key={work.id} work={work} />
           ))}
         </ScrollView>
       )}
+
       <CustomButton
-        title="Al dar click en este botón se cargarán 5 trabajadores más"
-        onPress={() => {
-          loadMoreWork();
-        }}
+        title="Cargar 5 trabajadores más"
+        onPress={loadMoreWork}
       />
     </View>
   );
 };
-export default workScreen;
- 
+
+export default WorkScreen;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
